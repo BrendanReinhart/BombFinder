@@ -4,3 +4,24 @@
 .red{
     color: #b00000;
 }
+.game-board{
+    margin: 0 auto;
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black;
+}
+.tile{
+    height: 50px;
+    width: 50px;
+    margin: 2px;
+    border: 1px solid brown;
+    cursor: pointer;
+}
+.tile:hover{
+    background-color: antiquewhite;
+}
+.tile.has-bomb {
+    background-color: red;
+}
