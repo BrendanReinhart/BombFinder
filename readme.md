@@ -13,6 +13,7 @@ An attempt to recreate Minesweeper using pure HTML5, CSS and JavaScript.
 
 ## History
 30/4/18 - Code ready to publish.
+Total time spent on project: ~11 hours.
 
 ## Credits
 Arthur Cheung (arthur-cheung)
