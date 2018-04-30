@@ -9,11 +9,18 @@ jQuery(document).ready(function() {
     generateTiles();
     randomiseBombs();
     populateNumbers();
+    setTilesRemaining();
 });
 
 var tileIDs = [];
 // Defined as a set to prevent duplicates in Utils.randomiseBombs()
 var bombIDs = new Set([]);
 var tileNumVals = {};
+var tilesRemaining = 0;
 
 $('.game-board').on('click','.tile', clickTile);
+
+$('.game-board').on('contextmenu', '.tile', rightClickTile)
+    // ev.preventDefault();
+    // alert('success!');
+    // return false;);

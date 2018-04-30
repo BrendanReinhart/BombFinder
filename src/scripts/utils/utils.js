@@ -83,13 +83,27 @@ function populateNumbers() {
     console.log('post-assignment tileNumVals: ', tileNumVals);
 };
 
+function setTilesRemaining() {
+    var totalTiles = options.tileNumX*options.tileNumY;
+    tilesRemaining = totalTiles - options.bombs;
+    console.log('Game Initialised. Tiles to clear before victory: ', tilesRemaining);
+};
+
+function rightClickTile() {
+    // event.preventDefault();
+    var tile = $(this);
+    console.log(tile);
+    tile.toggleClass('marked-tile');
+    // Needs to return false to prevent default context menu popup on right click:
+    return false;
+};
+
 function clickTile() {
+    console.log($(this));
     var tileID = Number($(this).data('coords'));
     revealTile(tileID);
-}
+};  
 
-
-// LOGIC FLAW IN BELOW: Need to figure how neighbour reveal works.
 function revealTile(tileID) {
     // Get clicked tile ID:
     var tile = $('.tile[data-coords="'+tileID+'"]')
@@ -104,13 +118,14 @@ function revealTile(tileID) {
         gameOver();
     // else if tile is a 0, then reveal all non-bomb neighbours:
     } else if(tileNumVals[tileID] === 0) {
-        // Reveal, with no number on screen:
         tile.addClass('revealed');
-        // Then, reveal neighbours:
-        
-        //List all neighbours, and refine to only valid tile IDs:
+        tilesRemaining--;
+        console.log('Tiles to clear before victory: ', tilesRemaining);
+
+        // Reveal neighbours:
         var neighbours = [tileID-1, tileID+99, tileID+100, tileID+101, tileID+1, tileID-99, tileID-100, tileID-101];
         var validNeighbours = [];
+        // Only want valid neighbour IDs:
         for(let ID of neighbours) {
             if($.inArray(ID, tileIDs) !== -1) {
                 validNeighbours.push(ID);
@@ -130,7 +145,17 @@ function revealTile(tileID) {
     // Else if tile is a number 1-8, reveal this tile's number:
     } else {
         tile.html(tileNumVals[tileID]).addClass('revealed');
+        tilesRemaining--;
+        console.log('Tiles to clear before victory: ', tilesRemaining);
     }
+
+    if(tilesRemaining === 0) {
+        gameWin();
+    }
+};
+
+function gameWin() {
+    alert('YOU WIN!!');
 };
 
 function gameOver() {

@@ -29,6 +29,9 @@ body {
 .tile:hover{
     background-color: rgb(194, 232, 250);
 }
+.tile.marked-tile {
+    background-color: rgb(216, 144, 85);
+}
 .tile.has-bomb {
     background-color: red;
 }
