@@ -12,11 +12,11 @@ An attempt to recreate Minesweeper using pure HTML5, CSS and JavaScript.
 * Implement some sort of scoring system, likely based on time.
 
 ## History
-30/4/18 - Code ready to publish.
+30/4/18 - Code ready to publish.  
 Total time spent on project: ~11 hours.
 
 ## Credits
-Arthur Cheung (arthur-cheung)
+Arthur Cheung (arthur-cheung)  
 Jerimac Ratliff (creator of Cube)
 
 ## License
