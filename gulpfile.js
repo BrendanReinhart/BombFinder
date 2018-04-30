@@ -36,10 +36,10 @@ var taskFunctions = {
         return new Promise(function (resolve, reject) {
             gulp.src('src/styles/**/*.css')
                 .pipe(autoprefixer('last 2 version'))
-                .pipe(gulp.dest('dist/styles'))
+                .pipe(gulp.dest('docs/styles'))
                 .pipe(rename({ suffix: '.min' }))
                 .pipe(minifycss())
-                .pipe(gulp.dest('dist/styles'))
+                .pipe(gulp.dest('docs/styles'))
                 .pipe(notify({ message: 'Styles task complete' }))
                 .on('data', createStream)
                 .on('end', resolve)
@@ -52,10 +52,10 @@ var taskFunctions = {
                 .pipe(jshint('.jshintrc'))
                 .pipe(jshint.reporter('default'))
                 .pipe(concat('all.js'))
-                .pipe(gulp.dest('dist/scripts'))
+                .pipe(gulp.dest('docs/scripts'))
                 .pipe(rename({ suffix: '.min' }))
 //                .pipe(uglify())
-                .pipe(gulp.dest('dist/scripts'))
+                .pipe(gulp.dest('docs/scripts'))
                 .pipe(notify({ message: 'Scripts task complete' }))
                 .on('data', createStream)
                 .on('end', resolve)
@@ -66,7 +66,7 @@ var taskFunctions = {
         return new Promise(function(resolve, reject) {
             gulp.src('src/images/**/*')
                 // .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-                .pipe(gulp.dest('dist/images'))
+                .pipe(gulp.dest('docs/images'))
                 .pipe(notify({ message: 'Images task complete' }))
                 .on('data', createStream)
                 .on('end', resolve)
@@ -77,7 +77,7 @@ var taskFunctions = {
         return new Promise(function(resolve, reject) {
             gulp.src('src/sounds/*')
                 // .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-                .pipe(gulp.dest('dist/sounds'))
+                .pipe(gulp.dest('docs/sounds'))
                 .pipe(notify({ message: 'Sounds task complete' }))
                 .on('data', createStream)
                 .on('end', resolve)
@@ -91,7 +91,7 @@ var taskFunctions = {
     //            'css': 'styles.min.css',
                     'js': 'scripts/all.min.js'
                 }))
-                .pipe(gulp.dest('dist'))
+                .pipe(gulp.dest('docs'))
                 .pipe(notify({message: 'HTML task complete'}))
                 .on('data', createStream)
                 .on('end', resolve)
@@ -113,7 +113,7 @@ for(var i in taskFunctions){
 
 // Clean task
 gulp.task('clean', function(cb) {
-    return del(['dist/*'], cb)
+    return del(['docs/*'], cb)
 });
 
 // Build task
@@ -160,8 +160,8 @@ gulp.task('watch', function() {
     // Create LiveReload server
     livereload.listen();  // This livereload is for when "node server.js" is run.
 
-    // Watch any files in dist/, reload on change
-    gulp.watch(['dist/**']).on('change', livereload.changed)
+    // Watch any files in docs/, reload on change
+    gulp.watch(['docs/**']).on('change', livereload.changed)
 
 });
 
@@ -170,7 +170,7 @@ gulp.task('watch', function() {
 gulp.task('serve', ['build', 'watch'], function(){
     connect.server({
         livereload: true, // This livereload is for when "gulp serve" is run.
-        root: 'dist',
+        root: 'docs',
         port: 3000
     });
 });
