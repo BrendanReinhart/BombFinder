@@ -15,25 +15,13 @@ function generateTiles() {
 
 function randomiseBombs() {
     var maxID = (options.tileNumX-1)*100+options.tileNumY;
-    console.log('generating bombs, up to max ID: ', maxID);
     // Generate a list of valid tile IDs to contain bombs (without duplicates):
     while(bombIDs.size < options.bombs) {
         var num = Math.floor(maxID*Math.random(Math.max(...tileIDs)));
-        console.log('trying number ',num);
         if($.inArray(num, tileIDs) !== -1) {
             bombIDs.add(num);
         } 
     }
-    console.log('all bomb IDs: ', bombIDs);
-
-    // FOR TESTING: assign classes to the bomb tiles:
-    // for(var ID of bombIDs) {
-    //     console.log('bomb ID: ',ID);
-    //     let stringID = String(ID);
-    //     console.log('bomb ID as a string: ',stringID);
-    //     $('.tile[data-coords="'+stringID+'"]').addClass('has-bomb');
-    // };
-    console.log('Populating bombIDs COMPLETE! final bombIDs: ', bombIDs.size, bombIDs);
 };
 
 function populateNumbers() {
@@ -42,57 +30,50 @@ function populateNumbers() {
         var thisVal = {[tile]: 0};
         Object.assign(tileNumVals, thisVal);
     }
-    console.log('tileNumVals: ', tileNumVals);  
 
-    // Now for each bomb, assign +1 to it's neighbour tiles:
+    // For each bomb, assign +1 to it's neighbour tiles:
     for(let bomb of bombIDs) {
-
         var inLeftCol = (bomb < 100);
         var inRightCol = (bomb > ((options.tileNumX-1)*100));
         var inTopRow = (bomb%100 === 0);
         var inBottomRow = ((bomb-(options.tileNumY-1))%100 === 0);
-        console.log('Assignment: Bomb ID ', bomb);
+
         //Assignment:
         if(!inTopRow) {
-            tileNumVals[bomb-1]++;  // above
+            tileNumVals[bomb-1]++;          // above
         }
         if(!inTopRow && !inRightCol) {
-            tileNumVals[bomb+99]++;   // above right
+            tileNumVals[bomb+99]++;         // above right
         }
         if(!inRightCol) {
-            tileNumVals[bomb+100]++;    // right
+            tileNumVals[bomb+100]++;        // right
         }
         if(!inBottomRow && !inRightCol) {
-            tileNumVals[bomb+101]++;      // below right
+            tileNumVals[bomb+101]++;        // below right
         }
         if(!inBottomRow) {
-            tileNumVals[bomb+1]++;         // below
+            tileNumVals[bomb+1]++;          // below
         }
         if(!inBottomRow && !inLeftCol) {
-            tileNumVals[bomb-99]++;     // below left
+            tileNumVals[bomb-99]++;         // below left
         }
         if(!inLeftCol) {
-            tileNumVals[bomb-100]++;      // left
+            tileNumVals[bomb-100]++;        // left
         }
         if(!inTopRow && !inLeftCol) {
-            tileNumVals[bomb-101]++;      // above left
+            tileNumVals[bomb-101]++;        // above left
         }
-        
-        console.log('after bomb ', bomb, ' assignment - tileNumVals: ', tileNumVals);
     }
-    console.log('post-assignment tileNumVals: ', tileNumVals);
 };
 
 function setTilesRemaining() {
     var totalTiles = options.tileNumX*options.tileNumY;
     tilesRemaining = totalTiles - options.bombs;
-    console.log('Game Initialised. Tiles to clear before victory: ', tilesRemaining);
 };
 
 function rightClickTile() {
     // event.preventDefault();
     var tile = $(this);
-    console.log(tile);
     tile.toggleClass('marked-tile');
     // Needs to return false to prevent default context menu popup on right click:
     return false;
@@ -107,16 +88,11 @@ function clickTile() {
 };  
 
 function revealTile(tileID) {
-    // Get clicked tile ID:
+    // Get clicked tile:
     var tile = $('.tile[data-coords="'+tileID+'"]')
-    // tile.addClass
-
-    //populate with tileNum:
-    console.log('this pressed tile has ID: ', tileID, ', and number should be: ', tileNumVals[tileID]);
     
     // If clicked tile has bomb, game over:
     if(bombIDs.has(tileID)) {
-        console.log('ka-BOOM!!!!!');
         gameOver();
 
     // else if tile is a 0, then automatically reveal all neighbours:
@@ -135,8 +111,8 @@ function revealTile(tileID) {
         }
 
         for(let neighbour of validNeighbours) {
-            // if (<neighbour has not yet been revealed> && <neighbour is not a bomb>) {reveal neighbour}
-            if( !($('.tile[data-coords="'+neighbour+'"]').hasClass('revealed')) && !bombIDs.has(tileID) ) {   
+            // if neighbour has not yet been revealed --> reveal neighbour
+            if( !($('.tile[data-coords="'+neighbour+'"]').hasClass('revealed')) ) {   
                     revealTile(neighbour);
                 }
         }
@@ -157,6 +133,10 @@ function revealTile(tileID) {
 function gameWin() {
     $('.game-board').off('click','.tile', clickTile);
     alert('YOU WIN!!');
+    // show restart button:
+    setInterval(function() {
+        $('.button-wrapper').html('<button class="replay-button">Play Again?</button>')
+    }, 1000);
 };
 
 function gameOver() {
@@ -169,14 +149,12 @@ function gameOver() {
     }
 
     // show Game Over screen with score:
-    console.log('ka-BOOM!!!!!');
+    alert('KABOOM!!!\nGame Over.');
 
     // show restart button:
     setInterval(function() {
         $('.button-wrapper').html('<button class="replay-button">Play Again?</button>')
     }, 1000);
-
-
 };
 
 function loadGame() {

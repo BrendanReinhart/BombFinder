@@ -1,6 +1,6 @@
 var options = {
-    bombs: 4,
-    tileNumX: 15,
+    bombs: 30,
+    tileNumX: 20,
     tileNumY: 15,
 }
 
