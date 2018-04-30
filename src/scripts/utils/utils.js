@@ -118,11 +118,11 @@ function revealTile(tileID) {
     if(bombIDs.has(tileID)) {
         console.log('ka-BOOM!!!!!');
         gameOver();
-    // else if tile is a 0, then reveal all non-bomb neighbours:
+
+    // else if tile is a 0, then automatically reveal all neighbours:
     } else if(tileNumVals[tileID] === 0) {
         tile.addClass('revealed');
         tilesRemaining--;
-        console.log('Tiles to clear before victory: ', tilesRemaining);
 
         // Reveal neighbours:
         var neighbours = [tileID-1, tileID+99, tileID+100, tileID+101, tileID+1, tileID-99, tileID-100, tileID-101];
@@ -133,12 +133,10 @@ function revealTile(tileID) {
                 validNeighbours.push(ID);
             }
         }
-        console.log('0 tile clicked. Valid neighbours: ', validNeighbours);
 
         for(let neighbour of validNeighbours) {
-            // if (<neighbour has not yet been revealed> && <neighbour is not a bomb>) {clickTile(neighbour ID)}
-            if( !($('.tile[data-coords="'+neighbour+'"]').hasClass('revealed')) && !bombIDs.has(tileID) ) {
-                // $('.tile[data-coords="'+neighbour+'"]').addClass('revealed');    
+            // if (<neighbour has not yet been revealed> && <neighbour is not a bomb>) {reveal neighbour}
+            if( !($('.tile[data-coords="'+neighbour+'"]').hasClass('revealed')) && !bombIDs.has(tileID) ) {   
                     revealTile(neighbour);
                 }
         }
@@ -148,30 +146,44 @@ function revealTile(tileID) {
     } else {
         tile.html(tileNumVals[tileID]).addClass('revealed');
         tilesRemaining--;
-        console.log('Tiles to clear before victory: ', tilesRemaining);
     }
 
+    // Check for Win condition:
     if(tilesRemaining === 0) {
         gameWin();
     }
 };
 
 function gameWin() {
+    $('.game-board').off('click','.tile', clickTile);
     alert('YOU WIN!!');
 };
 
 function gameOver() {
-    // <disable click event listener with off() method.>
+    // disable tile click event listener:
+    $('.game-board').off('click','.tile', clickTile);
 
-    // <show all bombs>
-    for(let bomb of bombIDs) {
-        // $('.tile[data-coords="'+neighbour+'"]').addClass('revealed');    
+    // show all bombs:
+    for(let bomb of bombIDs) { 
         $('.tile[data-coords="'+bomb+'"]').addClass('has-bomb');
     }
 
-    // <show Game Over screen with score>
-    alert('ka-BOOM!!!!!');
+    // show Game Over screen with score:
+    console.log('ka-BOOM!!!!!');
 
-    // <show restart button.>
-    
+    // show restart button:
+    setInterval(function() {
+        $('.button-wrapper').html('<button class="replay-button">Play Again?</button>')
+    }, 1000);
+
+
+};
+
+function loadGame() {
+    $('.game-board').html('');
+    $('.game-board').on('click','.tile', clickTile);
+    generateTiles();
+    randomiseBombs();
+    populateNumbers();
+    setTilesRemaining();
 };
