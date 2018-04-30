@@ -99,7 +99,9 @@ function rightClickTile() {
 };
 
 function clickTile() {
-    console.log($(this));
+    if($(this).hasClass('marked-tile') || $(this).hasClass('revealed')) {
+        return;
+    }
     var tileID = Number($(this).data('coords'));
     revealTile(tileID);
 };  
