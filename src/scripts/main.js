@@ -1,7 +1,7 @@
 var options = {
     bombs: 10,
-    tileNumX: 8,
-    tileNumY: 7,
+    tileNumX: 15,
+    tileNumY: 15,
 }
 
 jQuery(document).ready(function() {
@@ -16,4 +16,4 @@ var tileIDs = [];
 var bombIDs = new Set([]);
 var tileNumVals = {};
 
-$('.game-board').on('click','.tile', revealTile);
+$('.game-board').on('click','.tile', clickTile);

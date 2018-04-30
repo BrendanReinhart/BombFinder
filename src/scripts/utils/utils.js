@@ -27,12 +27,12 @@ function randomiseBombs() {
     console.log('all bomb IDs: ', bombIDs);
 
     // FOR TESTING: assign classes to the bomb tiles:
-    for(var ID of bombIDs) {
-        console.log('bomb ID: ',ID);
-        let stringID = String(ID);
-        console.log('bomb ID as a string: ',stringID);
-        $('.tile[data-coords="'+stringID+'"]').addClass('has-bomb');
-    };
+    // for(var ID of bombIDs) {
+    //     console.log('bomb ID: ',ID);
+    //     let stringID = String(ID);
+    //     console.log('bomb ID as a string: ',stringID);
+    //     $('.tile[data-coords="'+stringID+'"]').addClass('has-bomb');
+    // };
     console.log('Populating bombIDs COMPLETE! final bombIDs: ', bombIDs.size, bombIDs);
 };
 
@@ -83,24 +83,68 @@ function populateNumbers() {
     console.log('post-assignment tileNumVals: ', tileNumVals);
 };
 
-function revealTile() {
-    // Get clicked tile ID:
+function clickTile() {
     var tileID = Number($(this).data('coords'));
-    
+    revealTile(tileID);
+}
+
+
+// LOGIC FLAW IN BELOW: Need to figure how neighbour reveal works.
+function revealTile(tileID) {
+    // Get clicked tile ID:
+    var tile = $('.tile[data-coords="'+tileID+'"]')
+    // tile.addClass
+
     //populate with tileNum:
     console.log('this pressed tile has ID: ', tileID, ', and number should be: ', tileNumVals[tileID]);
     
-    // Check for Bomb:
+    // If clicked tile has bomb, game over:
     if(bombIDs.has(tileID)) {
         console.log('ka-BOOM!!!!!');
-        // gameOver();
+        gameOver();
+    // else if tile is a 0, then reveal all non-bomb neighbours:
+    } else if(tileNumVals[tileID] === 0) {
+        // Reveal, with no number on screen:
+        tile.addClass('revealed');
+        // Then, reveal neighbours:
+        
+        //List all neighbours, and refine to only valid tile IDs:
+        var neighbours = [tileID-1, tileID+99, tileID+100, tileID+101, tileID+1, tileID-99, tileID-100, tileID-101];
+        var validNeighbours = [];
+        for(let ID of neighbours) {
+            if($.inArray(ID, tileIDs) !== -1) {
+                validNeighbours.push(ID);
+            }
+        }
+        console.log('0 tile clicked. Valid neighbours: ', validNeighbours);
+
+        for(let neighbour of validNeighbours) {
+            // if (<neighbour has not yet been revealed> && <neighbour is not a bomb>) {clickTile(neighbour ID)}
+            if( !($('.tile[data-coords="'+neighbour+'"]').hasClass('revealed')) && !bombIDs.has(tileID) ) {
+                // $('.tile[data-coords="'+neighbour+'"]').addClass('revealed');    
+                    revealTile(neighbour);
+                }
+        }
+
+
+    // Else if tile is a number 1-8, reveal this tile's number:
     } else {
-        $(this).html(tileNumVals[tileID]);
+        tile.html(tileNumVals[tileID]).addClass('revealed');
     }
 };
 
-// function gameOver() {
-//     <disable click event listener with off() method.>
-//      <show Game Over screen with score>
-//      <show restart button.>
-// };
+function gameOver() {
+    // <disable click event listener with off() method.>
+
+    // <show all bombs>
+    for(let bomb of bombIDs) {
+        // $('.tile[data-coords="'+neighbour+'"]').addClass('revealed');    
+        $('.tile[data-coords="'+bomb+'"]').addClass('has-bomb');
+    }
+
+    // <show Game Over screen with score>
+    alert('ka-BOOM!!!!!');
+
+    // <show restart button.>
+    
+};
