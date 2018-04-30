@@ -1,34 +1,22 @@
-# Front End Template
-A template for a front end project.
-
-## Copy Repository
-1. Create a new blank repo in github.
-2. Make sure you have git installed. Create a temp directory and run the following commands: 
-  2. `git clone --bare https://github.com/arthur-accenture/front-end-template.git`
-  3. `cd front-end-template.git`
-  4. `git push --mirror https://github.com/your-github-username/name-for-new-repo.git`
-4. Delete `front-end-template.git`. 
-5. Pull the new repo down to your machine.
-
-## Installation
-1. If gulp hasn't been installed globally, run: `npm install -g gulp` first.
-1. run `npm install`
+# BombFinder
+An attempt to recreate Minesweeper using pure HTML5, CSS and JavaScript.
 
 ## Usage
-1. `node server.js`
-1. `gulp watch`
-
-or
-
-1. `gulp serve`
+1. TODO: Select difficulty (or use custom dimensions up to 99x99, and bomb number up to 50% saturation) and click "play"
+2. Left-click to clear a tile.
+3. Right-click to flag a tile as a potential bomb (this will prevent it from being left-clicked until unflagged)
+4. Clear all non-bomb tiles to win!
 
 ## TODO
-* Need to refactor to not use gulp.start
-* Modularise a "serve" function.
+* Implement Difficulties - Easy (15x15, 15 bombs), Medium (25x25, 100 bombs), Hard (40x40, 400 bombs)
+* Implement some sort of scoring system, likely based on time.
 
 ## History
-TODO: Write history
+30/4/18 - Code ready to publish.
+
 ## Credits
-TODO: Write credits
+Arthur Cheung (arthur-cheung)
+Jerimac Ratliff (creator of Cube)
+
 ## License
 TODO: Write license
