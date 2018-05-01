@@ -1,4 +1,5 @@
 function generateTiles() {
+    tileIDs = [];
     let gameElement = $('.game-board');
     for(i=0; i<options.tileNumX; i++) {
         let column = $('<div class="col-wrapper"></div>');
@@ -10,10 +11,10 @@ function generateTiles() {
         }
         column.appendTo(gameElement);
     }
-
 };
 
 function randomiseBombs() {
+    bombIDs.clear();
     var maxID = (options.tileNumX-1)*100+options.tileNumY;
     // Generate a list of valid tile IDs to contain bombs (without duplicates):
     while(bombIDs.size < options.bombs) {
@@ -22,6 +23,7 @@ function randomiseBombs() {
             bombIDs.add(num);
         } 
     }
+    console.log('bombs: ', bombIDs);
 };
 
 function populateNumbers() {
@@ -80,6 +82,7 @@ function rightClickTile() {
 };
 
 function clickTile() {
+    // if tile is marked or already revealed, do nothing:
     if($(this).hasClass('marked-tile') || $(this).hasClass('revealed')) {
         return;
     }
@@ -87,7 +90,7 @@ function clickTile() {
     revealTile(tileID);
 };  
 
-function revealTile(tileID) {   
+function revealTile(tileID) {
     // Get clicked tile:
     var tile = $('.tile[data-coords="'+tileID+'"]')
     
@@ -135,7 +138,7 @@ function gameWin() {
     alert('YOU WIN!!');
     // show restart button:
     setInterval(function() {
-        $('.button-wrapper').html('<button class="replay-button">Play Again?</button>')
+        $('.replay-button-wrapper').html('<button class="replay-button">Play Again?</button>')
     }, 1000);
 };
 
@@ -153,26 +156,63 @@ function gameOver() {
 
     // show restart button:
     setInterval(function() {
-        $('.button-wrapper').html('<button class="replay-button">Play Again?</button>')
+        $('.replay-button-wrapper').html('<button class="replay-button">Play Again?</button>')
     }, 1000);
 };
 
+function getOptions() {
+    if($('input[name=difficulty]:checked' ).val() === 'easy') {
+        options = difficulties.easy;
+    } else if ($( 'input[name=difficulty]:checked' ).val() === 'medium') {
+        options = difficulties.medium;
+    } else if ($( 'input[name=difficulty]:checked' ).val() === 'hard') {
+        options = difficulties.hard;
+    };
+}
+
 function loadGame() {
+    console.log('initialising game...');
+    getOptions();
     $('.game-board').html('');
     $('.game-board').on('click','.tile', clickTile);
     generateTiles();
     randomiseBombs();
     populateNumbers();
     setTilesRemaining();
+    
 };
 
 var options = {
-    bombs: 30,
+    difficulty: 'medium',
+    bombs: 40,
     tileNumX: 20,
     tileNumY: 15,
 }
 
+var difficulties = {
+    easy: {
+        difficulty: 'easy',
+        bombs: 8,
+        tileNumX: 12,
+        tileNumY: 10,
+        },
+    medium: {
+        difficulty: 'medium',
+        bombs: 40,
+        tileNumX: 20,
+        tileNumY: 15,
+        },
+    hard: {
+        difficulty: 'hard',
+        bombs: 200,
+        tileNumX: 40,
+        tileNumY: 25,
+        }
+
+}
+
 jQuery(document).ready(function() {
+    $('#play-game').on('click', loadGame);
     loadGame();
 });
 

@@ -7,9 +7,20 @@
     <!-- endcss -->
 </head>
 <body>
-    <div class="game-board">
+    <div class="options-wrapper">
+        <input type="radio" name="difficulty" id="easy" value="easy">
+        <label for="easy">Easy</label>
+        <input type="radio" name="difficulty" id="medium" value="medium" checked>
+        <label for="medium" checked>Medium</label>
+        <input type="radio" name="difficulty" id="hard" value="hard">
+        <label for="hard">Hard</label>
     </div>
     <div class="button-wrapper">
+        <button id="play-game">Play Game</button>
+    </div>
+    <div class="game-board">
+    </div>
+    <div class="button-wrapper replay-button-wrapper">
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

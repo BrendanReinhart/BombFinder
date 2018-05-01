@@ -1,10 +1,34 @@
 var options = {
-    bombs: 30,
+    difficulty: 'medium',
+    bombs: 40,
     tileNumX: 20,
     tileNumY: 15,
 }
 
+var difficulties = {
+    easy: {
+        difficulty: 'easy',
+        bombs: 8,
+        tileNumX: 12,
+        tileNumY: 10,
+        },
+    medium: {
+        difficulty: 'medium',
+        bombs: 40,
+        tileNumX: 20,
+        tileNumY: 15,
+        },
+    hard: {
+        difficulty: 'hard',
+        bombs: 200,
+        tileNumX: 40,
+        tileNumY: 25,
+        }
+
+}
+
 jQuery(document).ready(function() {
+    $('#play-game').on('click', loadGame);
     loadGame();
 });
 
